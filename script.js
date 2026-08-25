@@ -13,7 +13,7 @@ function initPortfolioApp() {
   // 1. DYNAMIC ROTATING HERO ROLES ANIMATION
   // --------------------------------------------------------------------------
   const roles = [
-    "Business Information Systems Undergraduate",
+    "BIS Undergraduate",
     "Physical Fitness Trainer",
     "UI Designer",
     "AI Enthusiast"
@@ -135,81 +135,6 @@ function initPortfolioApp() {
     });
   });
 
-  // --------------------------------------------------------------------------
-  // 5. PROFILE PHOTO CUSTOMIZATION (LOCALSTORAGE PERSISTENCE)
-  // --------------------------------------------------------------------------
-  const savedPhoto = localStorage.getItem('ravindu_profile_image');
-  const heroImg = document.getElementById('hero-avatar-img');
-  const aboutImg = document.getElementById('about-avatar-img');
-  const heroPlaceholder = document.getElementById('hero-avatar-placeholder');
-  const aboutPlaceholder = document.getElementById('about-avatar-placeholder');
-
-  function applyProfilePhoto(url) {
-    if (!url) return;
-
-    if (heroImg && heroPlaceholder) {
-      heroImg.src = url;
-      heroImg.style.display = 'block';
-      heroPlaceholder.style.display = 'none';
-    }
-
-    if (aboutImg && aboutPlaceholder) {
-      aboutImg.src = url;
-      aboutImg.style.display = 'block';
-      aboutPlaceholder.style.display = 'none';
-    }
-  }
-
-  if (savedPhoto) {
-    applyProfilePhoto(savedPhoto);
-  }
-
-  // Photo Modal Handlers
-  const photoModal = document.getElementById('modal-photo');
-  const openPhotoBtns = document.querySelectorAll('.btn-open-photo-modal');
-  const closePhotoBtn = document.getElementById('close-photo-modal');
-  const savePhotoUrlBtn = document.getElementById('btn-save-photo-url');
-  const photoUrlInput = document.getElementById('photo-url-input');
-  const fileInput = document.getElementById('photo-file-input');
-
-  openPhotoBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (photoModal) photoModal.classList.add('open');
-    });
-  });
-
-  if (closePhotoBtn && photoModal) {
-    closePhotoBtn.addEventListener('click', () => {
-      photoModal.classList.remove('open');
-    });
-  }
-
-  if (savePhotoUrlBtn && photoUrlInput) {
-    savePhotoUrlBtn.addEventListener('click', () => {
-      const url = photoUrlInput.value.trim();
-      if (url) {
-        localStorage.setItem('ravindu_profile_image', url);
-        applyProfilePhoto(url);
-        if (photoModal) photoModal.classList.remove('open');
-      }
-    });
-  }
-
-  if (fileInput) {
-    fileInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-          const base64 = event.target.result;
-          localStorage.setItem('ravindu_profile_image', base64);
-          applyProfilePhoto(base64);
-          if (photoModal) photoModal.classList.remove('open');
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-  }
 
   // --------------------------------------------------------------------------
   // 6. GENERAL MODAL OPEN/CLOSE HANDLERS
