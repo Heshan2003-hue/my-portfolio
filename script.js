@@ -36,14 +36,43 @@ function initPortfolioApp() {
   }
 
   // --------------------------------------------------------------------------
-  // 2. SCROLL PROGRESS BAR, BACK-TO-TOP & HEADER ACTIVE NAVIGATION
+  // 2. ACTIVE PAGE DETECTION, SCROLL PROGRESS BAR & BACK-TO-TOP
   // --------------------------------------------------------------------------
-  const progressBar = document.getElementById('scroll-progress-bar');
-  const backToTopBtn = document.getElementById('back-to-top');
-  const siteHeader = document.getElementById('site-header');
+  const currentPath = window.location.pathname.toLowerCase();
   const navLinks = document.querySelectorAll('.nav-link');
   const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-  const sections = document.querySelectorAll('section[id]');
+
+  function updateActiveNavLink() {
+    let activeKey = 'home';
+    if (currentPath.includes('about')) {
+      activeKey = 'about';
+    } else if (currentPath.includes('skills')) {
+      activeKey = 'skills';
+    } else if (currentPath.includes('projects')) {
+      activeKey = 'projects';
+    } else if (currentPath.includes('contact')) {
+      activeKey = 'contact';
+    }
+
+    [...navLinks, ...mobileNavLinks].forEach(link => {
+      const href = (link.getAttribute('href') || '').toLowerCase();
+      if (
+        (activeKey === 'home' && (href === '/' || href === '/index.html' || href === 'index.html' || href === '#home')) ||
+        (activeKey === 'about' && href.includes('about')) ||
+        (activeKey === 'skills' && href.includes('skills')) ||
+        (activeKey === 'projects' && href.includes('projects')) ||
+        (activeKey === 'contact' && href.includes('contact'))
+      ) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  }
+  updateActiveNavLink();
+
+  const progressBar = document.getElementById('scroll-progress-bar');
+  const backToTopBtn = document.getElementById('back-to-top');
 
   window.addEventListener('scroll', () => {
     const scrollY = window.scrollY;
@@ -63,30 +92,6 @@ function initPortfolioApp() {
         backToTopBtn.classList.remove('visible');
       }
     }
-
-    // Active Section Tracking
-    const scrollPos = scrollY + 220;
-    sections.forEach(sec => {
-      const top = sec.offsetTop;
-      const height = sec.offsetHeight;
-      const id = sec.getAttribute('id');
-
-      if (scrollPos >= top && scrollPos < top + height) {
-        navLinks.forEach(link => {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === `#${id}`) {
-            link.classList.add('active');
-          }
-        });
-
-        mobileNavLinks.forEach(link => {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === `#${id}`) {
-            link.classList.add('active');
-          }
-        });
-      }
-    });
   });
 
   // Back-to-top click
